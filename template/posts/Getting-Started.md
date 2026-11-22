@@ -35,12 +35,27 @@ flowchart LR
     B --> C["Auto-generate _sidebar.md + search-version.js + feed.xml"]
 ```
 
-## 4. Custom Audio & Video Tags
+## 4. Custom Audio, Video & Image Syntax
 
-Embed audio or video players anywhere in Markdown:
+Embed video, audio, and zoomable images in Markdown:
 
-- Audio tag syntax: ``@[audio](url, title, artist, cover)``
-- Video tag syntax: ``@[video](url)``
+```html
+<!-- Video Player (resolved from root index.html) -->
+<tukuai-player url="media/videos/demo.mp4" title="demo"></tukuai-player>
+
+<!-- Audio Player (resolved from root index.html) -->
+<tukuai-audio
+  url="media/music/demo.mp3"
+  name="Track Title"
+  artist="Artist Name"
+  cover="media/music/cover.png">
+</tukuai-audio>
+```
+
+```markdown
+<!-- Standard Markdown Image (resolved relative to the current .md file depth) -->
+![Sample Image](../../media/the_birthday.jpg)
+```
 
 ## 5. Responsive Tables
 

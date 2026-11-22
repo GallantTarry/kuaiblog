@@ -239,17 +239,42 @@ module.exports = {
 
 ---
 
-## Built-In Features & Markdown Syntax
+## Built-In Features & Recommended Markdown Syntax
 
+### 1. Video Player (`<tukuai-player>`)
+Use the `<tukuai-player>` custom component in your Markdown articles (supports setting `title` for the built-in camera snapshot download filename):
+
+```html
+<tukuai-player url="media/videos/XXX.mp4" title="XXX"></tukuai-player>
+```
+> *Shortcode alternative*: `@[video](media/videos/XXX.mp4)` (quick syntax when custom snapshot title is not needed).
+
+### 2. Audio Player (`<tukuai-audio>`)
+Use the `<tukuai-audio>` custom component for APlayer music cards with system MediaSession lock-screen controls and automatic route-leave cleanup:
+
+```html
+<tukuai-audio
+  url="media/music/XXX.mp3"
+  name="Track Title"
+  artist="Artist Name"
+  cover="media/music/XXX.png">
+</tukuai-audio>
+```
+> *Shortcode alternative*: `@[audio](media/music/XXX.mp3, Track Title, Artist Name, media/music/XXX.png)`
+
+### 3. Images & Path Resolution Rules (`![alt](...)`)
+Use standard Markdown image syntax (automatically enhanced with Viewer.js zoomable lightbox gallery on click):
+
+```markdown
+![Network Diagram](../../media/the_birthday.jpg)
+```
+
+> **Important Note on Relative Paths (`media/...` vs `../../media/...`)**:
+> - **HTML Custom Tags (`<tukuai-player>` / `<tukuai-audio>`)** resolve `url` and `cover` relative to the root `index.html`, so always start directly with `media/videos/XXX.mp4` or `media/music/XXX.mp3`.
+> - **Standard Markdown Images (`![...](...)`)** are resolved by Docsify relative to the **current `.md` article's subfolder depth**. For example, if your article is two levels deep (such as `posts/category/my-post.md`), prefix the path with `../../media/XXX.jpg` to step back to the root `media/` folder (or `../media/XXX.jpg` if the article is directly under `posts/my-post.md`).
+
+### 4. Dual Themes, Math & Offline Visualization
 - **Dual Theme Long-Press Toggle**: Click the bottom-right floating circle button (`.sidebar-toggle`) to collapse/expand the sidebar; **long-press it for 500ms** to switch between **Geek Dark** and **Pastel Light** themes.
-- **Audio Player (`@[audio]`)**:
-  ```markdown
-  @[audio](https://example.com/song.mp3, Song Title, Artist Name, https://example.com/cover.jpg)
-  ```
-- **Video Player (`@[video]`)**:
-  ```markdown
-  @[video](https://example.com/video.mp4)
-  ```
 - **LaTeX Mathematics**: Supports `$...$`, `$$...$$`, `\(...\)`, `\[...\]`, and automatically normalizes double-escaped `\\(...\\)` / `\\[...\\]` copied from AI assistants.
 - **Mermaid Diagrams & Data Visualization**: Bundled with offline Mermaid 12.2.0, Chart.js, D3.js v7, and Spectral.js.
 

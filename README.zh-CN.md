@@ -239,17 +239,42 @@ module.exports = {
 
 ---
 
-## 内置特性与扩展 Markdown 语法
+## 内置特性与推荐 Markdown 语法
 
+### 1. 插入视频播放器 (`<tukuai-player>`)
+推荐使用 `<tukuai-player>` 原生自定义标签插入视频（可通过 `title` 属性自定义点击播放器内照相机截图时保存的 `.png` 文件名，切走页面时自动销毁不留残音）：
+
+```html
+<tukuai-player url="media/videos/XXX.mp4" title="XXX"></tukuai-player>
+```
+> *简写替代语法*：`@[video](media/videos/XXX.mp4)`（不需要自定义截图文件名时可用）。
+
+### 2. 插入音乐播放器 (`<tukuai-audio>`)
+推荐使用 `<tukuai-audio>` 原生自定义标签插入 APlayer 音乐卡片（支持系统级锁屏媒体控制栏与切页自动停播销毁）：
+
+```html
+<tukuai-audio
+  url="media/music/XXX.mp3"
+  name="歌曲名称"
+  artist="歌手或作者"
+  cover="media/music/XXX.png">
+</tukuai-audio>
+```
+> *简写替代语法*：`@[audio](media/music/XXX.mp3, 歌曲名称, 歌手或作者, media/music/XXX.png)`
+
+### 3. 插入图片与路径层级规则 (`![描述](...)`)
+使用标准 Markdown 图片语法（点击图片自动触发 Viewer.js 全屏毛玻璃画廊缩放预览）：
+
+```markdown
+![网络设备图](../../media/the_birthday.jpg)
+```
+
+> **关键路径写法说明（为什么视频写 `media/...` 而图片写 `../../media/...`？）**：
+> - **音视频 HTML 标签（`<tukuai-player>` / `<tukuai-audio>`）**：浏览器直接以网站根目录的 `index.html` 为基准解析路径，因此无论文章在几级子文件夹下，路径都直接写 `media/videos/XXX.mp4` 或 `media/music/XXX.mp3`。
+> - **Markdown 原生图片（`![...](...)`）**：Docsify 会以**当前 `.md` 文章所在的子文件夹位置**为基准计算相对路径。例如你的文章放在二级目录（如 `posts/分类名/文章.md` 或 `海底宝藏/视听空间/文章.md`），就需要退两层写 `../../media/XXX.jpg`；如果文章直接放在一级目录（如 `posts/文章.md`），则退一层写 `../media/XXX.jpg`。
+
+### 4. 双主题切换、数学公式与离线可视化
 - **长按切换双主题**：单击右下角悬浮圆点（`.sidebar-toggle`）可收起/展开侧边栏；**长按该圆点 500 毫秒（0.5 秒）**即可在**极客暗黑 (Geek Dark)** 与**温柔幻彩 (Pastel Light)** 两套主题之间无缝切换。
-- **音乐播放器标签 (`@[audio]`)**：
-  ```markdown
-  @[audio](https://example.com/song.mp3, 歌曲名称, 歌手名称, https://example.com/cover.jpg)
-  ```
-- **视频播放器标签 (`@[video]`)**：
-  ```markdown
-  @[video](https://example.com/video.mp4)
-  ```
 - **LaTeX 数学公式**：原生支持 `$...$`、`$$...$$`、`\(...\)`、`\[...\]`，并自动兼容直接从 AI 聊天框复制出来的双反斜杠公式 `\\(...\\)` / `\\[...\\]`。
 - **离线可视化全家桶**：内置本地版 Mermaid 12.2.0、Chart.js、D3.js v7 与 Spectral.js 颜料物理混色库。
 

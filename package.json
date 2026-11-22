@@ -1,6 +1,6 @@
 {
   "name": "kuaiblog",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A zero-build-step Docsify Markdown blog engine with Geek Dark & Pastel Light themes, IDE-grade syntax highlighting, MathJax, Mermaid 12, APlayer/DPlayer tags, and automatic search cache invalidation.",
   "main": "lib/index.js",
   "bin": {
