@@ -14,7 +14,8 @@
     "lib/",
     "template/",
     "LICENSE",
-    "README.md"
+    "README.md",
+    "README.zh-CN.md"
   ],
   "keywords": [
     "blog",

@@ -1,3 +1,5 @@
+English | [简体中文](README.zh-CN.md)
+
 # KuaiBlog
 
 **KuaiBlog** (`kuaiblog`) is a zero-bundler Docsify Markdown blog and knowledge-base engine that transforms a plain folder of `.md` articles into a full-featured static site with **Geek Dark** & **Pastel Light** themes, IDE-grade syntax highlighting, MathJax LaTeX, Mermaid 12 diagrams, APlayer/DPlayer media Web Components, and SHA-256 search cache invalidation.
