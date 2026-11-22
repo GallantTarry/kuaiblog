@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>KuaiBlog</title>
+    <link>https://example.com/</link>
+    <description>A Geek-Dark &amp; Pastel-Light Docsify blog engine with rich media and visualization support.</description>
+    <language>zh-CN</language>
+    <lastBuildDate>Sun, 22 Nov 2026 11:19:49 GMT</lastBuildDate>
+    <atom:link href="https://example.com/feed.xml" rel="self" type="application/rss+xml"/>
+    <item>
+      <title>Welcome to KuaiBlog</title>
+      <link>https://example.com/#/posts/Getting-Started.md</link>
+      <guid isPermaLink="true">https://example.com/#/posts/Getting-Started.md</guid>
+      <pubDate>Sun, 22 Nov 2026 11:19:49 GMT</pubDate>
+      <category>Getting-Started.md</category>
+      <description>Inline Euler&apos;s identity $e^{i\pi} + 1 = 0$ and display math:</description>
+    </item>
+  </channel>
+</rss>
