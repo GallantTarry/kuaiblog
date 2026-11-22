@@ -1,0 +1,2 @@
+# kuaiblog
+build blog
