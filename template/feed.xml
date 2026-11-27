@@ -5,13 +5,20 @@
     <link>https://example.com/</link>
     <description>A Geek-Dark &amp; Pastel-Light Docsify blog engine with rich media and visualization support.</description>
     <language>zh-CN</language>
-    <lastBuildDate>Sun, 22 Nov 2026 12:30:54 GMT</lastBuildDate>
+    <lastBuildDate>Thu, 26 Nov 2026 14:13:38 GMT</lastBuildDate>
     <atom:link href="https://example.com/feed.xml" rel="self" type="application/rss+xml"/>
+    <image>
+      <url>https://example.com/favicon/favicon-96x96.png</url>
+      <title>KuaiBlog</title>
+      <link>https://example.com/</link>
+      <width>96</width>
+      <height>96</height>
+    </image>
     <item>
       <title>Welcome to KuaiBlog</title>
       <link>https://example.com/#/posts/Getting-Started.md</link>
       <guid isPermaLink="true">https://example.com/#/posts/Getting-Started.md</guid>
-      <pubDate>Sun, 22 Nov 2026 12:30:54 GMT</pubDate>
+      <pubDate>Thu, 26 Nov 2026 14:13:38 GMT</pubDate>
       <category>Getting-Started.md</category>
       <description>Inline Euler&apos;s identity $e^{i\pi} + 1 = 0$ and display math:</description>
     </item>

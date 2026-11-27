@@ -4,10 +4,12 @@
     <meta charset="UTF-8">
     <title>KuaiBlog</title>
     <meta name="theme-color" content="#09090b">
-    <link rel="icon" href="favicon/treasure.ico" sizes="any">
+    <link rel="icon" href="favicon.ico" sizes="any">
     <link rel="icon" type="image/png" sizes="96x96" href="favicon/favicon-96x96.png">
     <link rel="icon" type="image/png" sizes="192x192" href="favicon/favicon-192x192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="favicon/treasure.png">
     <link rel="apple-touch-icon" sizes="180x180" href="favicon/appletreasure.png">
+    <link rel="manifest" href="site.webmanifest">
     <meta property="og:type" content="website">
     <meta property="og:title" content="KuaiBlog">
     <meta property="og:description" content="A Geek-Dark &amp; Pastel-Light Docsify blog engine with rich media and visualization support.">
@@ -880,7 +882,7 @@
             padding: 0.12em 0.4em;
             border-radius: 5px;
             font-size: 0.875em !important;
-            line-height: 1.55;
+            line-height: 1.95;
             font-family: 'JetBrains Mono', Consolas, 'Courier New', monospace !important;
             border: 1px solid rgba(255, 255, 255, 0.12) !important;
             -webkit-box-decoration-break: clone;
@@ -1659,6 +1661,9 @@
             name: '<a href="javascript:void(0)" class="reboot-trigger">' + sidebarHeading + '</a>',
             repo: '',
             loadSidebar: true,
+            alias: {
+                '/.*/_sidebar.md': '/_sidebar.md'
+            },
             subMaxLevel: 0,
             sidebarDisplayLevel: 0,
             auto2top: true,

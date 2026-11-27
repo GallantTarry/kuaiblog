@@ -26,7 +26,7 @@ flowchart TD
 
     subgraph RuntimeLayer["3. Browser Client Runtime (index.html)"]
         VER_CHK["Search Cache Validator (localStorage docsify.search.* Purge)"]
-        DOC["Docsify v4 Router + Hook Pipeline (beforeEach / doneEach)"]
+        DOC["Docsify v4 Router + Root Sidebar Alias + Hook Pipeline"]
         PRE["Markdown Preprocessor (AI Double-Backslash LaTeX + CJK Bold Fix + Media Shortcodes)"]
         RENDER["DOM Enhancement (Prism Token Subdivision + Viewer.js + IntersectionObserver)"]
         WC["Custom Web Components (tukuai-audio APlayer + tukuai-player DPlayer)"]
@@ -64,8 +64,8 @@ flowchart TD
 | :--- | :--- | :--- | :--- |
 | **1. Workspace Scaffolding & Config** | `template/*` -> User blog directory + `kuaiblog.config.js` | Node.js `fs.copyFileSync`, UMD module export (`module.exports` / `window.$kuaiblog`) | Initializes a self-contained static blog workspace where both Node.js build scripts and the browser runtime share a single configuration file without bundlers. |
 | **2. Sidebar & Search Fingerprint Generation** | `posts/**/*.md` + `README.md` -> `_sidebar.md` + `js/search-version.js` | Recursive directory traversal, per-segment `encodeURIComponent`, `crypto.createHash('sha256')` | Generates a nested Markdown sidebar supporting spaces, emojis, and CJK paths, and computes a deterministic 12-character SHA-256 fingerprint of all article contents. |
-| **3. RSS 2.0 Feed Construction** | `posts/**/*.md` + `.git` history -> `feed.xml` | `child_process.execFileSync('git')`, Markdown AST-free paragraph summarizer, XML entity escaping | Extracts each post's H1 title, first-commit timestamp (`git log --format=@@%aI` with `mtime` fallback), and plain-text summary while excluding private directories. |
-| **4. Search Cache Synchronization** | `js/search-version.js` -> Browser `localStorage` | `window.__SEARCH_VERSION__`, `localStorage` key prefix scanning (`docsify.search.*`) | Compares the latest content hash against `localStorage.getItem('site_search_version')` on page load and purges stale Docsify full-text search indexes automatically. |
+| **3. RSS 2.0 Feed Construction** | `posts/**/*.md` + `.git` history -> `feed.xml` | `child_process.execFileSync('git')`, Markdown AST-free paragraph summarizer, XML entity escaping, RSS `<image>` channel icon | Extracts each post's H1 title, first-commit timestamp (`git log --format=@@%aI` with `mtime` fallback), and plain-text summary while excluding private directories. |
+| **4. Search Cache & Route Aliasing** | `js/search-version.js` + `_sidebar.md` -> Browser `localStorage` & Router | `window.__SEARCH_VERSION__`, `localStorage` key prefix scanning (`docsify.search.*`), Docsify `alias` (`/.*/_sidebar.md` -> `/_sidebar.md`) | Purges stale Docsify full-text search indexes automatically when content hashes change, and routes nested folder navigation to the root `_sidebar.md` without 404 requests. |
 | **5. Markdown Preprocessing & Media Hydration** | Raw `.md` response -> Docsify `hook.beforeEach` -> Custom Elements | Regex AST-aware code skipping, Web Components (`<tukuai-audio>`, `<tukuai-player>`), APlayer, DPlayer, `navigator.mediaSession` | Normalizes double-escaped LaTeX (`\\[...\\]`, `\\(...\\)`), fixes CJK punctuation bolding edge cases, and mounts audio/video players with automatic `disconnectedCallback()` teardown on route change. |
 | **6. Post-Render DOM & Theme Engine** | Rendered `.markdown-section` -> `hook.doneEach` -> Interactive UI | Prism.js token classification (`token-type`, `token-control`), MathJax (`tex-mml-svg.js`), Mermaid 12.2.0, Viewer.js, `IntersectionObserver`, Pointer Events | Applies IDE-grade syntax coloring, wraps responsive tables, binds image lightbox zoom, animates scroll reveal, enforces session-based folder password locks, and toggles Geek Dark / Pastel Light themes via a 500ms pointer long-press. |
 
@@ -82,6 +82,8 @@ kuaiblog/
 │   └── index.js                  # Core Node.js implementation for scaffolding, building, and local dev server
 └── template/                     # Blog workspace template copied by `npx kuaiblog init`
     ├── index.html                # Docsify runtime shell, dual-theme CSS variables, and plugin pipeline
+    ├── site.webmanifest          # PWA Web App Manifest with 192x192 and 512x512 icon declarations
+    ├── favicon.ico               # Root multi-size browser icon for zero-404 `/favicon.ico` lookup
     ├── kuaiblog.config.js        # Unified UMD configuration shared by Node.js scripts and browser runtime
     ├── build_sidebar.js          # Standalone sidebar and SHA-256 search fingerprint generator
     ├── build_feed.js             # Standalone RSS 2.0 feed generator

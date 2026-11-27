@@ -26,7 +26,7 @@ flowchart TD
 
     subgraph RuntimeLayer["3. 浏览器客户端运行时 (index.html)"]
         VER_CHK["搜索缓存校验器 (清理过期 localStorage docsify.search.*)"]
-        DOC["Docsify v4 路由与钩子管线 (beforeEach / doneEach)"]
+        DOC["Docsify v4 路由 + 根目录侧边栏 Alias 映射 + 钩子管线"]
         PRE["Markdown 预处理器 (AI 双反斜杠公式 + 中文标点加粗修复 + 媒体短代码)"]
         RENDER["DOM 增强渲染 (Prism 关键字细分染色 + Viewer.js + IntersectionObserver)"]
         WC["自定义 Web Components (tukuai-audio APlayer + tukuai-player DPlayer)"]
@@ -64,8 +64,8 @@ flowchart TD
 | :--- | :--- | :--- | :--- |
 | **1. 博客脚手架初始化与统一配置** | `template/*` -> 用户博客目录 + `kuaiblog.config.js` | Node.js `fs.copyFileSync`、UMD 双端模块导出 (`module.exports` / `window.$kuaiblog`) | 初始化自包含的静态博客工作区，使 Node.js 构建脚本与浏览器前端运行时直接共享同一份配置文件，无需任何打包器。 |
 | **2. 侧边栏目录树与搜索指纹生成** | `posts/**/*.md` + `README.md` -> `_sidebar.md` + `js/search-version.js` | 递归目录遍历、逐段路径 `encodeURIComponent` 编码、`crypto.createHash('sha256')` | 生成支持空格、Emoji 与中文路径的多级 Markdown 侧边栏，并对全站文章内容计算确定性的 12 位 SHA-256 指纹。 |
-| **3. RSS 2.0 订阅源构建** | `posts/**/*.md` + `.git` 历史 -> `feed.xml` | `child_process.execFileSync('git')`、免 AST 正文首段摘要提取、XML 实体转义 | 自动提取每篇文章的 H1 标题、Git 首次提交时间戳（`git log --format=@@%aI`，无 Git 时回退至 `mtime`）及纯文本摘要，并跳过私密目录。 |
-| **4. 全文搜索缓存联动校验** | `js/search-version.js` -> 浏览器 `localStorage` | `window.__SEARCH_VERSION__`、`localStorage` 键名前缀扫描 (`docsify.search.*`) | 页面加载时对比最新内容指纹与 `localStorage.getItem('site_search_version')`，若文章发生增删改则自动清空旧的 Docsify 搜索缓存。 |
+| **3. RSS 2.0 订阅源构建** | `posts/**/*.md` + `.git` history -> `feed.xml` | `child_process.execFileSync('git')`、免 AST 正文首段摘要提取、XML 实体转义、RSS `<image>` 频道图标 | 自动提取每篇文章的 H1 标题、Git 首次提交时间戳（`git log --format=@@%aI`，无 Git 时回退至 `mtime`）及纯文本摘要，并跳过私密目录。 |
+| **4. 全文搜索缓存与侧边栏路由收敛** | `js/search-version.js` + `_sidebar.md` -> 浏览器 `localStorage` 与路由器 | `window.__SEARCH_VERSION__`、`localStorage` 键名前缀扫描 (`docsify.search.*`)、Docsify `alias` (`/.*/_sidebar.md` -> `/_sidebar.md`) | 当内容指纹变化时自动清空旧的 Docsify 搜索缓存，并将任意子目录的侧边栏请求统一收敛至根目录 `/_sidebar.md`，消除嵌套 404 请求。 |
 | **5. Markdown 预处理与音视频挂载** | 原始 `.md` 文本 -> Docsify `hook.beforeEach` -> Custom Elements | 跳过代码块的正则替换、Web Components (`<tukuai-audio>`, `<tukuai-player>`)、APlayer、DPlayer、`navigator.mediaSession` | 自动还原从 AI 复制的双反斜杠公式（`\\[...\\]`、`\\(...\\)`），修复中文标点紧贴加粗失效问题，并在切页时通过 `disconnectedCallback()` 自动销毁音视频实例防止背景音残留。 |
 | **6. 渲染后 DOM 增强与双主题引擎** | `.markdown-section` -> `hook.doneEach` -> 交互 UI | Prism.js 词法细分染色 (`token-type`, `token-control`)、MathJax (`tex-mml-svg.js`)、Mermaid 12.2.0、Viewer.js、`IntersectionObserver`、Pointer Events | 执行 IDE 级数据类型/控制流关键字着色、移动端响应式表格包裹、图片灯箱缩放、滚动渐显动画、基于 `sessionStorage` 的私密目录密码锁，以及长按右下角圆点 500ms 切换极客暗黑/温柔幻彩主题。 |
 
@@ -82,6 +82,8 @@ kuaiblog/
 │   └── index.js                  # 脚手架初始化、目录/RSS 构建与本地预览服务器的核心实现
 └── template/                     # 执行 `npx kuaiblog init` 时复制到用户目录的博客模板
     ├── index.html                # Docsify 运行时外壳、双主题 CSS 变量系统与插件管线
+    ├── site.webmanifest          # PWA Web App Manifest 配置（声明 192x192 与 512x512 桌面图标）
+    ├── favicon.ico               # 根目录站点图标（避免浏览器默认请求 `/favicon.ico` 产生 404）
     ├── kuaiblog.config.js        # Node.js 脚本与浏览器运行时共享的 UMD 统一配置文件
     ├── build_sidebar.js          # 独立可运行的侧边栏生成与 SHA-256 搜索指纹更新脚本
     ├── build_feed.js             # 独立可运行的 RSS 2.0 订阅源生成脚本
